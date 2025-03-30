@@ -6,9 +6,9 @@
 </section>
 
 <% if (locals.message) { %>
-  <div class="message success">
-    <%= message %>
-  </div>
+<div class="message success">
+  <%= message %>
+</div>
 <% } %>
 
 <section class="guestbook-content">
@@ -90,4 +90,30 @@
           <span class="star filled"></span>
           <span class="star filled"></span>
           <span class="star filled"></span>
-        </div
+        </div>
+      </div>
+      <div class="entry-content">
+        <p>Dziękuję za wspaniałą stronę dla mojej firmy. Profesjonalne podejście i efekt przekroczył moje oczekiwania!</p>
+      </div>
+    </div>
+    
+    <div class="guestbook-entry">
+      <div class="entry-header">
+        <div class="entry-author">Piotr Wiśniewski</div>
+        <div class="entry-date">05.03.2025</div>
+        <div class="entry-rating">
+          <span class="star filled"></span>
+          <span class="star filled"></span>
+          <span class="star filled"></span>
+          <span class="star"></span>
+          <span class="star"></span>
+        </div>
+      </div>
+      <div class="entry-content">
+        <p>Dobra współpraca, choć projekt trwał nieco dłużej niż zakładaliśmy. Efekt końcowy zadowalający.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<%- include('partials/footer') %>

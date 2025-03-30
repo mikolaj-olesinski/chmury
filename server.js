@@ -43,18 +43,24 @@ app.get('/contact', (req, res) => {
     console.log('Rendering contact page');
     res.render('contact', { title: 'Kontakt' });
 });
-
 app.post('/ksiega-gosci', (req, res) => {
     console.log('Form submitted:', req.body);
 
-    const message = 'Formularz został wysłany! Dziękujemy za Twój wpis!';
-    res.render('guestbook', { 
-        message: message 
+    res.render('ksiega-gosci', {
+        title: 'Księga gości',
+        message: 'Twój wpis został pomyślnie dodany!',
+
+        name: req.body.name,
+        email: req.body.email,
+        website: req.body.website,
+        message_2: req.body.message,
+        rating: req.body.rating
     });
 });
 
 // Importowanie tras
 const indexRoutes = require('./routes/index');
+const { title } = require('process');
 app.use('/', indexRoutes);
 
 // Obsługa 404
