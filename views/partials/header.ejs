@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html lang="pl">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title><%= title %> | Moje Portfolio</title>
+  <link rel="stylesheet" href="/css/style.css">
+</head>
+<body>
+  <header>
+    <div class="container">
+      <div class="logo">
+        <h1>Moje Portfolio</h1>
+      </div>
+      <nav>
+        <ul>
+          <li><a href="/" class="<%= title === 'Strona główna' ? 'active' : '' %>">Strona główna</a></li>
+          <li><a href="/portfolio" class="<%= title === 'Portfolio' ? 'active' : '' %>">Portfolio</a></li>
+          <li><a href="/oferta" class="<%= title === 'Nasza oferta' ? 'active' : '' %>">Oferta</a></li>
+          <li><a href="/kontakt" class="<%= title === 'Kontakt' ? 'active' : '' %>">Kontakt</a></li>
+          <li><a href="/ksiega-gosci" class="<%= title === 'Księga gości' ? 'active' : '' %>">Księga gości</a></li>
+        </ul>
+      </nav>
+    </div>
+  </header>
+  <main class="container">

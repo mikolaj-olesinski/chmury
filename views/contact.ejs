@@ -1,0 +1,98 @@
+<%- include('partials/header') %>
+
+<section class="page-header">
+  <h1>Kontakt</h1>
+  <p>Skontaktuj się ze mną.</p>
+</section>
+
+<% if (locals.message) { %>
+<div class="message success">
+  <%= message %>
+</div>
+<% } %>
+
+<section class="contact-content">
+  <div class="contact-info">
+    <h2>Dane kontaktowe</h2>
+    <div class="contact-details">
+      <div class="contact-item">
+        <div class="contact-icon">
+          <img src="/images/email-icon.png" alt="Email">
+        </div>
+        <div class="contact-text">
+          <h3>Email</h3>
+          <p>kontakt@mojeportfolio.pl</p>
+        </div>
+      </div>
+      
+      <div class="contact-item">
+        <div class="contact-icon">
+          <img src="/images/phone-icon.png" alt="Telefon">
+        </div>
+        <div class="contact-text">
+          <h3>Telefon</h3>
+          <p>+48 123 456 789</p>
+        </div>
+      </div>
+      
+      <div class="contact-item">
+        <div class="contact-icon">
+          <img src="/images/location-icon.png" alt="Adres">
+        </div>
+        <div class="contact-text">
+          <h3>Adres</h3>
+          <p>ul. Przykładowa 123<br>00-000 Warszawa</p>
+        </div>
+      </div>
+    </div>
+    
+    <div class="social-media">
+      <h3>Media społecznościowe</h3>
+      <div class="social-links">
+        <a href="#" class="social-link">
+          <img src="/images/facebook-icon.png" alt="Facebook">
+        </a>
+        <a href="#" class="social-link">
+          <img src="/images/instagram-icon.png" alt="Instagram">
+        </a>
+        <a href="#" class="social-link">
+          <img src="/images/linkedin-icon.png" alt="LinkedIn">
+        </a>
+        <a href="#" class="social-link">
+          <img src="/images/github-icon.png" alt="GitHub">
+        </a>
+      </div>
+    </div>
+  </div>
+  
+  <div class="contact-form">
+    <h2>Formularz kontaktowy</h2>
+    <form action="/kontakt" method="POST">
+      <div class="form-group">
+        <label for="name">Imię i nazwisko</label>
+        <input type="text" id="name" name="name" required>
+      </div>
+      
+      <div class="form-group">
+        <label for="email">Email</label>
+        <input type="email" id="email" name="email" required>
+      </div>
+      
+      <div class="form-group">
+        <label for="subject">Temat</label>
+        <input type="text" id="subject" name="subject" required>
+      </div>
+      
+      <div class="form-group">
+        <label for="message">Wiadomość</label>
+        <textarea id="message" name="message" rows="5" required></textarea>
+      </div>
+      
+      <div class="form-group">
+        <button type="submit" class="btn btn-full">Wyślij wiadomość</button>
+      </div>
+    </form>
+  </div>
+</section>
+
+<%- include('partials/footer') %>

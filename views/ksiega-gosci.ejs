@@ -1,0 +1,93 @@
+<%- include('partials/header') %>
+
+<section class="page-header">
+  <h1>Księga gości</h1>
+  <p>Podziel się swoją opinią lub zostaw wiadomość.</p>
+</section>
+
+<% if (locals.message) { %>
+  <div class="message success">
+    <%= message %>
+  </div>
+<% } %>
+
+<section class="guestbook-content">
+  <div class="guestbook-form">
+    <h2>Dodaj wpis</h2>
+    <form action="/ksiega-gosci" method="POST">
+      <div class="form-group">
+        <label for="name">Imię i nazwisko</label>
+        <input type="text" id="name" name="name" required>
+      </div>
+      
+      <div class="form-group">
+        <label for="email">Email</label>
+        <input type="email" id="email" name="email" required>
+      </div>
+
+      <div class="form-group">
+        <label for="website">Strona WWW (opcjonalnie)</label>
+        <input type="url" id="website" name="website">
+      </div>
+      
+      <div class="form-group">
+        <label for="message">Wiadomość</label>
+        <textarea id="message" name="message" rows="5" required></textarea>
+      </div>
+      
+      <div class="form-group">
+        <label for="rating">Ocena (1-5)</label>
+        <div class="rating-stars">
+          <input type="radio" id="star5" name="rating" value="5">
+          <label for="star5"></label>
+          <input type="radio" id="star4" name="rating" value="4">
+          <label for="star4"></label>
+          <input type="radio" id="star3" name="rating" value="3" checked>
+          <label for="star3"></label>
+          <input type="radio" id="star2" name="rating" value="2">
+          <label for="star2"></label>
+          <input type="radio" id="star1" name="rating" value="1">
+          <label for="star1"></label>
+        </div>
+      </div>
+      
+      <div class="form-group">
+        <button type="submit" class="btn btn-full">Dodaj wpis</button>
+      </div>
+    </form>
+  </div>
+  
+  <div class="guestbook-entries">
+    <h2>Wpisy gości</h2>
+    
+    <!-- Tutaj będą wyświetlane wpisy z bazy danych -->
+    <!-- Na potrzeby demonstracji dodaję przykładowe wpisy -->
+    
+    <div class="guestbook-entry">
+      <div class="entry-header">
+        <div class="entry-author">Jan Kowalski</div>
+        <div class="entry-date">15.03.2025</div>
+        <div class="entry-rating">
+          <span class="star filled"></span>
+          <span class="star filled"></span>
+          <span class="star filled"></span>
+          <span class="star filled"></span>
+          <span class="star"></span>
+        </div>
+      </div>
+      <div class="entry-content">
+        <p>Świetna strona i profesjonalnie wykonane projekty! Polecam współpracę.</p>
+      </div>
+    </div>
+    
+    <div class="guestbook-entry">
+      <div class="entry-header">
+        <div class="entry-author">Anna Nowak</div>
+        <div class="entry-date">10.03.2025</div>
+        <div class="entry-rating">
+          <span class="star filled"></span>
+          <span class="star filled"></span>
+          <span class="star filled"></span>
+          <span class="star filled"></span>
+          <span class="star filled"></span>
+        </div

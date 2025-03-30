@@ -1,0 +1,17 @@
+<%- include('partials/header') %>
+
+<section class="error-page">
+  <div class="error-content">
+    <h1>500</h1>
+    <h2>Błąd serwera</h2>
+    <p>Przepraszamy, wystąpił nieoczekiwany błąd.</p>
+    <% if (error) { %>
+      <div class="error-details">
+        <p><%= error.message %></p>
+      </div>
+    <% } %>
+    <a href="/" class="btn">Wróć do strony głównej</a>
+  </div>
+</section>
+
+<%- include('partials/footer') %>
