@@ -1,0 +1,684 @@
+<!DOCTYPE html>
+<html lang="pl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <link rel="stylesheet" href="style.css">
+    <title>Portfolio Mikołaja Olesińskiego</title>
+</head>
+<body>
+    <header class="header">
+        <div class="container header-content">
+            <a href="#" class="logo" id="home-link">Mikołaj Olesiński</a>
+            <ul class="header-links-ul">
+                <li class="header-link" id="home-link">Strona główna</li>
+                <li class="header-link" id="portfolio-link">Portfolio</li>
+                <li class="header-link" id="skills-link">Umiejętności</li>
+                <li class="header-link" id="guestbook-link">Księga gości</li>
+                <li class="header-link" id="contact-link">Kontakt</li>
+            </ul>
+            <button id="theme-toggle">Zmień motyw</button>
+        </div>
+    </header>
+    
+    <main id="main-content">
+        <!-- Content will be loaded here by JavaScript -->
+    </main>
+    
+    <footer>
+        <div class="container">
+            <p>&copy; 2025 Portfolio Mikołaja Olesińskiego.</p>
+        </div>
+    </footer>
+    
+    <script>
+        // Page URLs
+        let pageUrls = {
+            home: '/',
+            portfolio: '/?portfolio',
+            skills: '/?skills',
+            guestbook: '/?guestbook',
+            contact: '/?contact',
+            error404: '/?404'
+        };
+        
+        // Cache DOM elements
+        const mainContent = document.getElementById('main-content');
+        const themeToggle = document.getElementById('theme-toggle');
+        
+        // Setup event listeners for navigation
+        document.getElementById('home-link').addEventListener('click', (event) => {
+            event.preventDefault();
+            let stateObj = { page: 'home' };
+            document.title = 'Portfolio Mikołaja Olesińskiego';
+            history.pushState(stateObj, "home", pageUrls.home);
+            renderHomePage();
+        });
+        
+        document.getElementById('portfolio-link').addEventListener('click', (event) => {
+            event.preventDefault();
+            let stateObj = { page: 'portfolio' };
+            document.title = 'Portfolio | Mikołaj Olesiński';
+            history.pushState(stateObj, "portfolio", pageUrls.portfolio);
+            renderPortfolioPage();
+        });
+        
+        document.getElementById('skills-link').addEventListener('click', (event) => {
+            event.preventDefault();
+            let stateObj = { page: 'skills' };
+            document.title = 'Umiejętności | Mikołaj Olesiński';
+            history.pushState(stateObj, "skills", pageUrls.skills);
+            renderSkillsPage();
+        });
+        
+        document.getElementById('guestbook-link').addEventListener('click', (event) => {
+            event.preventDefault();
+            let stateObj = { page: 'guestbook' };
+            document.title = 'Księga gości | Mikołaj Olesiński';
+            history.pushState(stateObj, "guestbook", pageUrls.guestbook);
+            renderGuestbookPage();
+        });
+        
+        document.getElementById('contact-link').addEventListener('click', (event) => {
+            event.preventDefault();
+            let stateObj = { page: 'contact' };
+            document.title = 'Kontakt | Mikołaj Olesiński';
+            history.pushState(stateObj, "contact", pageUrls.contact);
+            renderContactPage();
+        });
+        
+        // Theme toggle
+        themeToggle.addEventListener('click', () => {
+            document.body.classList.toggle('dark-mode');
+            
+            // You can save the preference to localStorage
+            const isDarkMode = document.body.classList.contains('dark-mode');
+            localStorage.setItem('darkMode', isDarkMode);
+        });
+        
+        // Check for saved theme preference
+        function loadSavedTheme() {
+            const savedDarkMode = localStorage.getItem('darkMode') === 'true';
+            if (savedDarkMode) {
+                document.body.classList.add('dark-mode');
+            }
+        }
+        
+        // Handle browser back/forward navigation
+        window.onpopstate = function(event) {
+            if (event.state) {
+                switch (event.state.page) {
+                    case 'home':
+                        renderHomePage();
+                        break;
+                    case 'portfolio':
+                        renderPortfolioPage();
+                        break;
+                    case 'skills':
+                        renderSkillsPage();
+                        break;
+                    case 'guestbook':
+                        renderGuestbookPage();
+                        break;
+                    case 'contact':
+                        renderContactPage();
+                        break;
+                    default:
+                        renderErrorPage();
+                }
+            } else {
+                renderHomePage();
+            }
+        };
+        
+        // Page renderers
+        function renderHomePage() {
+            mainContent.innerHTML = `
+                <section class="hero">
+                    <div class="hero-content">
+                        <h1>Witaj na mojej stronie portfolio!</h1>
+                        <p>Jestem ambitnym programistą i studentem informatyki</p>
+                        <a href="#" class="btn" id="portfolio-btn">Zobacz moje prace</a>
+                    </div>
+                </section>
+                
+                <div class="container">
+                    <section class="about">
+                        <h2>O mnie</h2>
+                        <div class="about-content">
+                            <div class="about-image">
+                                <img src="/api/placeholder/400/300" alt="Moje zdjęcie">
+                            </div>
+                            <div class="about-text">
+                                <p>Witaj! Mam na imię Mikołaj Olesiński i jestem studentem informatyki stosowanej.</p>
+                                <p>Specjalizuję się w projektowaniu stron internetowych, tworzeniu aplikacji webowych oraz optymalizacji istniejących rozwiązań.</p>
+                                <p>Moje podejście do projektowania opiera się na prostocie, intuicyjności i doskonałym doświadczeniu użytkownika.</p>
+                                <a href="#" class="btn" id="contact-btn-home">Skontaktuj się ze mną</a>
+                            </div>
+                        </div>
+                    </section>
+                    
+                    <section class="services">
+                        <h2>Moje umiejętności</h2>
+                        <div class="services-grid">
+                            <div class="service-card">
+                                <h3>Analiza danych</h3>
+                                <p>Przetwarzanie, eksploracja i wizualizacja danych przy użyciu Pythona i bibliotek ML.</p>
+                            </div>
+                            <div class="service-card">
+                                <h3>Tworzenie aplikacji webowych</h3>
+                                <p>Projektowanie i rozwój nowoczesnych aplikacji internetowych.</p>
+                            </div>
+                            <div class="service-card">
+                                <h3>Programowanie w C++ i Java</h3>
+                                <p>Tworzenie aplikacji i implementacja algorytmów w językach obiektowych.</p>
+                            </div>
+                        </div>
+                        <div class="cta">
+                            <a href="#" class="btn" id="skills-btn-home">Zobacz pełną ofertę</a>
+                        </div>
+                    </section>
+                </div>
+            `;
+            
+            // Add event listeners for buttons on the home page
+            document.getElementById('portfolio-btn').addEventListener('click', (e) => {
+                e.preventDefault();
+                document.getElementById('portfolio-link').click();
+            });
+            
+            document.getElementById('contact-btn-home').addEventListener('click', (e) => {
+                e.preventDefault();
+                document.getElementById('contact-link').click();
+            });
+            
+            document.getElementById('skills-btn-home').addEventListener('click', (e) => {
+                e.preventDefault();
+                document.getElementById('skills-link').click();
+            });
+        }
+        
+        function renderPortfolioPage() {
+            mainContent.innerHTML = `
+                <section class="page-header">
+                    <h1>Moje portfolio</h1>
+                    <p>Poniżej przedstawiam wybrane projekty, które miałem przyjemność zrealizować.</p>
+                </section>
+                
+                <div class="container">
+                    <section class="portfolio-gallery">
+                        <div class="portfolio-grid">
+                            <div class="portfolio-item" data-category="web">
+                                <div class="portfolio-img">
+                                    <img src="/api/placeholder/400/250" alt="Projekt 1">
+                                </div>
+                                <div class="portfolio-info">
+                                    <h3>Predicting NBA Salaries</h3>
+                                    <p>Raport na temat przewidywania wynagrodzeń w NBA</p>
+                                    <a href="https://github.com/mikolaj-olesinski/Predicting-NBA-Salaries" class="btn-small">Zobacz więcej</a>
+                                </div>
+                            </div>
+                            
+                            <div class="portfolio-item" data-category="app">
+                                <div class="portfolio-img">
+                                    <img src="/api/placeholder/400/250" alt="Projekt 2">
+                                </div>
+                                <div class="portfolio-info">
+                                    <h3>Sudoku photo detection solver</h3>
+                                    <p>Aplikacja do rozwiązania sudoku z wykorzystaniem detekcji zdjęć</p>
+                                    <a href="https://github.com/mikolaj-olesinski/Sudoku-game-and-solver" class="btn-small">Zobacz więcej</a>
+                                </div>
+                            </div>
+                            
+                            <div class="portfolio-item" data-category="design">
+                                <div class="portfolio-img">
+                                    <img src="/api/placeholder/400/250" alt="Projekt 3">
+                                </div>
+                                <div class="portfolio-info">
+                                    <h3>Maze Solver with Reinforced Learning</h3>
+                                    <p>Aplikacja do rozwiązywania labiryntów z wykorzystaniem uczenia przez wzmacnianie</p>
+                                    <a href="https://github.com/mikolaj-olesinski/Maze-Solver-with-Reinforced-Learning" class="btn-small">Zobacz więcej</a>
+                                </div>
+                            </div>
+                            
+                            <div class="portfolio-item" data-category="web">
+                                <div class="portfolio-img">
+                                    <img src="/api/placeholder/400/250" alt="Projekt 4">
+                                </div>
+                                <div class="portfolio-info">
+                                    <h3>Los Angeles Crime Analytics Dashboard</h3>
+                                    <p>Raport na temat przestępczości w Los Angeles</p>
+                                    <a href="https://github.com/mikolaj-olesinski/LA_crime_dashboard" class="btn-small">Zobacz więcej</a>
+                                </div>
+                            </div>
+                            
+                            <div class="portfolio-item" data-category="app">
+                                <div class="portfolio-img">
+                                    <img src="/api/placeholder/400/250" alt="Projekt 5">
+                                </div>
+                                <div class="portfolio-info">
+                                    <h3>Projekt 5</h3>
+                                    <p>Aplikacja do zarządzania zadaniami</p>
+                                    <a href="#" class="btn-small">Zobacz więcej</a>
+                                </div>
+                            </div>
+                            
+                            <div class="portfolio-item" data-category="design">
+                                <div class="portfolio-img">
+                                    <img src="/api/placeholder/400/250" alt="Projekt 6">
+                                </div>
+                                <div class="portfolio-info">
+                                    <h3>Climbing gym manager mobile app</h3>
+                                    <p>Aplikacja mobilna do zarządzania siłownią wspinaczkową</p>
+                                    <a href="https://github.com/jkociecki/climbing-gym-manager" class="btn-small">Zobacz więcej</a>
+                                </div>
+                            </div>
+                        </div>
+                    </section>
+                </div>
+            `;
+        }
+        
+        function renderSkillsPage() {
+            mainContent.innerHTML = `
+                <section class="page-header">
+                    <h1>Moje umiejętności</h1>
+                    <p>Poniżej przedstawiam technologie i narzędzia, z którymi pracuję.</p>
+                </section>
+                
+                <div class="container">
+                    <section class="skills-section">
+                        <h2>Języki programowania</h2>
+                        <div class="skills-grid">
+                            <div class="skill-item">
+                                <h3>Python</h3>
+                                <div class="skill-level">
+                                    <div class="skill-progress" style="width: 95%"></div>
+                                </div>
+                                <p>Zaawansowany</p>
+                            </div>
+                            <div class="skill-item">
+                                <h3>JavaScript</h3>
+                                <div class="skill-level">
+                                    <div class="skill-progress" style="width: 85%"></div>
+                                </div>
+                                <p>Zaawansowany</p>
+                            </div>
+                            <div class="skill-item">
+                                <h3>C++</h3>
+                                <div class="skill-level">
+                                    <div class="skill-progress" style="width: 75%"></div>
+                                </div>
+                                <p>Średniozaawansowany</p>
+                            </div>
+                            <div class="skill-item">
+                                <h3>Java</h3>
+                                <div class="skill-level">
+                                    <div class="skill-progress" style="width: 70%"></div>
+                                </div>
+                                <p>Średniozaawansowany</p>
+                            </div>
+                        </div>
+                    </section>
+                    
+                    <section class="skills-section">
+                        <h2>Technologie webowe</h2>
+                        <div class="skills-grid">
+                            <div class="skill-item">
+                                <h3>HTML5</h3>
+                                <div class="skill-level">
+                                    <div class="skill-progress" style="width: 95%"></div>
+                                </div>
+                                <p>Zaawansowany</p>
+                            </div>
+                            <div class="skill-item">
+                                <h3>CSS3</h3>
+                                <div class="skill-level">
+                                    <div class="skill-progress" style="width: 90%"></div>
+                                </div>
+                                <p>Zaawansowany</p>
+                            </div>
+                            <div class="skill-item">
+                                <h3>React</h3>
+                                <div class="skill-level">
+                                    <div class="skill-progress" style="width: 80%"></div>
+                                </div>
+                                <p>Średniozaawansowany</p>
+                            </div>
+                            <div class="skill-item">
+                                <h3>Django</h3>
+                                <div class="skill-level">
+                                    <div class="skill-progress" style="width: 75%"></div>
+                                </div>
+                                <p>Średniozaawansowany</p>
+                            </div>
+                        </div>
+                    </section>
+                    
+                    <section class="skills-section">
+                        <h2>Narzędzia i inne umiejętności</h2>
+                        <div class="skills-grid">
+                            <div class="skill-item">
+                                <h3>Git</h3>
+                                <div class="skill-level">
+                                    <div class="skill-progress" style="width: 90%"></div>
+                                </div>
+                                <p>Zaawansowany</p>
+                            </div>
+                            <div class="skill-item">
+                                <h3>Docker</h3>
+                                <div class="skill-level">
+                                    <div class="skill-progress" style="width: 70%"></div>
+                                </div>
+                                <p>Średniozaawansowany</p>
+                            </div>
+                            <div class="skill-item">
+                                <h3>Data Science</h3>
+                                <div class="skill-level">
+                                    <div class="skill-progress" style="width: 85%"></div>
+                                </div>
+                                <p>Zaawansowany</p>
+                            </div>
+                            <div class="skill-item">
+                                <h3>Machine Learning</h3>
+                                <div class="skill-level">
+                                    <div class="skill-progress" style="width: 80%"></div>
+                                </div>
+                                <p>Średniozaawansowany</p>
+                            </div>
+                        </div>
+                    </section>
+                    
+                    <section class="education-section">
+                        <h2>Edukacja</h2>
+                        <div class="timeline">
+                            <div class="timeline-item">
+                                <div class="timeline-date">2023 - obecnie</div>
+                                <div class="timeline-content">
+                                    <h3>Magister Informatyki</h3>
+                                    <p>Akademia Górniczo-Hutnicza w Krakowie</p>
+                                    <p>Specjalizacja: Sztuczna Inteligencja i Analiza Danych</p>
+                                </div>
+                            </div>
+                            <div class="timeline-item">
+                                <div class="timeline-date">2020 - 2023</div>
+                                <div class="timeline-content">
+                                    <h3>Licencjat Informatyki</h3>
+                                    <p>Akademia Górniczo-Hutnicza w Krakowie</p>
+                                    <p>Specjalizacja: Inżynieria Oprogramowania</p>
+                                </div>
+                            </div>
+                        </div>
+                    </section>
+                </div>
+            `;
+        }
+        
+        function renderGuestbookPage() {
+            mainContent.innerHTML = `
+                <section class="page-header">
+                    <h1>Księga gości</h1>
+                    <p>Zostaw swój komentarz lub opinię.</p>
+                </section>
+                
+                <div class="container">
+                    <section class="guestbook-form">
+                        <h2>Dodaj wpis</h2>
+                        <form id="guestbook-form">
+                            <div class="form-group">
+                                <label for="name">Imię i nazwisko:</label>
+                                <input type="text" id="name" name="name" required>
+                            </div>
+                            <div class="form-group">
+                                <label for="email">Email:</label>
+                                <input type="email" id="email" name="email" required>
+                            </div>
+                            <div class="form-group">
+                                <label for="message">Wiadomość:</label>
+                                <textarea id="message" name="message" rows="5" required></textarea>
+                            </div>
+                            <div class="form-group">
+                                <button type="submit" class="btn">Wyślij</button>
+                            </div>
+                        </form>
+                    </section>
+                    
+                    <section class="guestbook-entries">
+                        <h2>Wpisy</h2>
+                        <div class="entries-list" id="entries-list">
+                            <div class="entry">
+                                <div class="entry-header">
+                                    <h3>Jan Kowalski</h3>
+                                    <span class="entry-date">2025-03-15</span>
+                                </div>
+                                <div class="entry-content">
+                                    <p>Świetna strona portfolio! Projekty są imponujące i pokazują szeroki zakres umiejętności.</p>
+                                </div>
+                            </div>
+                            <div class="entry">
+                                <div class="entry-header">
+                                    <h3>Anna Nowak</h3>
+                                    <span class="entry-date">2025-03-10</span>
+                                </div>
+                                <div class="entry-content">
+                                    <p>Bardzo profesjonalna prezentacja umiejętności. Szczególnie podobają mi się projekty z zakresu analizy danych.</p>
+                                </div>
+                            </div>
+                            <div class="entry">
+                                <div class="entry-header">
+                                    <h3>Piotr Wiśniewski</h3>
+                                    <span class="entry-date">2025-03-05</span>
+                                </div>
+                                <div class="entry-content">
+                                    <p>Jestem pod wrażeniem Twojego projektu Maze Solver! Czy planujesz rozwijać go w przyszłości?</p>
+                                </div>
+                            </div>
+                        </div>
+                    </section>
+                </div>
+            `;
+            
+            // Add event listener for the guestbook form
+            document.getElementById('guestbook-form').addEventListener('submit', (e) => {
+                e.preventDefault();
+                
+                // Get form values
+                const name = document.getElementById('name').value;
+                const email = document.getElementById('email').value;
+                const message = document.getElementById('message').value;
+                
+                // Create a new entry
+                const entriesList = document.getElementById('entries-list');
+                const newEntry = document.createElement('div');
+                newEntry.classList.add('entry');
+                
+                // Get current date in YYYY-MM-DD format
+                const today = new Date();
+                const formattedDate = today.toISOString().split('T')[0];
+                
+                // Add entry content
+                newEntry.innerHTML = `
+                    <div class="entry-header">
+                        <h3>${name}</h3>
+                        <span class="entry-date">${formattedDate}</span>
+                    </div>
+                    <div class="entry-content">
+                        <p>${message}</p>
+                    </div>
+                `;
+                
+                // Add new entry to the top of the list
+                entriesList.insertBefore(newEntry, entriesList.firstChild);
+                
+                // Reset the form
+                document.getElementById('guestbook-form').reset();
+                
+                // Show success message
+                alert('Dziękujemy za dodanie wpisu!');
+            });
+        }
+        
+        function renderContactPage() {
+            mainContent.innerHTML = `
+                <section class="page-header">
+                    <h1>Kontakt</h1>
+                    <p>Masz pytania? Skontaktuj się ze mną.</p>
+                </section>
+                
+                <div class="container">
+                    <section class="contact-content">
+                        <div class="contact-info">
+                            <h2>Informacje kontaktowe</h2>
+                            <div class="contact-item">
+                                <span class="contact-icon">📧</span>
+                                <p>Email: <a href="mailto:mikolaj.olesinski@example.com">mikolaj.olesinski@example.com</a></p>
+                            </div>
+                            <div class="contact-item">
+                                <span class="contact-icon">🔗</span>
+                                <p>LinkedIn: <a href="https://www.linkedin.com/in/mikolaj-olesinski/" target="_blank">linkedin.com/in/mikolaj-olesinski</a></p>
+                            </div>
+                            <div class="contact-item">
+                                <span class="contact-icon">📱</span>
+                                <p>Telefon: <a href="tel:+48123456789">+48 123 456 789</a></p>
+                            </div>
+                            <div class="contact-item">
+                                <span class="contact-icon">💻</span>
+                                <p>GitHub: <a href="https://github.com/mikolaj-olesinski" target="_blank">github.com/mikolaj-olesinski</a></p>
+                            </div>
+                        </div>
+                        
+                        <div class="contact-form">
+                            <h2>Formularz kontaktowy</h2>
+                            <form id="contact-form">
+                                <div class="form-group">
+                                    <label for="contact-name">Imię i nazwisko:</label>
+                                    <input type="text" id="contact-name" name="contact-name" required>
+                                </div>
+                                <div class="form-group">
+                                    <label for="contact-email">Email:</label>
+                                    <input type="email" id="contact-email" name="contact-email" required>
+                                </div>
+                                <div class="form-group">
+                                    <label for="contact-subject">Temat:</label>
+                                    <input type="text" id="contact-subject" name="contact-subject" required>
+                                </div>
+                                <div class="form-group">
+                                    <label for="contact-message">Wiadomość:</label>
+                                    <textarea id="contact-message" name="contact-message" rows="5" required></textarea>
+                                </div>
+                                <div class="form-group">
+                                    <button type="submit" class="btn">Wyślij wiadomość</button>
+                                </div>
+                            </form>
+                        </div>
+                    </section>
+                    
+                    <section class="faq-section">
+                        <h2>Często zadawane pytania</h2>
+                        <div class="faq-items">
+                            <div class="faq-item">
+                                <h3>Jakie są Twoje stawki za projekty?</h3>
+                                <p>Każdy projekt jest wyceniany indywidualnie, w zależności od zakresu prac, złożoności i terminu realizacji. Skontaktuj się ze mną, aby omówić szczegóły.</p>
+                            </div>
+                            <div class="faq-item">
+                                <h3>Czy przyjmujesz projekty jako freelancer?</h3>
+                                <p>Tak, realizuję projekty zarówno jako freelancer, jak i w ramach dłuższej współpracy.</p>
+                            </div>
+                            <div class="faq-item">
+                                <h3>Jaki jest Twój typowy czas realizacji projektu?</h3>
+                                <p>Czas realizacji zależy od złożoności projektu. Małe projekty zwykle zajmują 1-2 tygodnie, bardziej złożone mogą trwać miesiąc lub dłużej.</p>
+                            </div>
+                            <div class="faq-item">
+                                <h3>Czy oferujesz wsparcie po zakończeniu projektu?</h3>
+                                <p>Tak, oferuję wsparcie techniczne i konsultacje po zakończeniu projektu, zazwyczaj przez okres 3-6 miesięcy.</p>
+                            </div>
+                        </div>
+                    </section>
+                </div>
+            `;
+            
+            // Add event listener for the contact form
+            document.getElementById('contact-form').addEventListener('submit', (e) => {
+                e.preventDefault();
+                
+                // Get form values
+                const name = document.getElementById('contact-name').value;
+                const email = document.getElementById('contact-email').value;
+                const subject = document.getElementById('contact-subject').value;
+                const message = document.getElementById('contact-message').value;
+                
+                // Reset the form
+                document.getElementById('contact-form').reset();
+                
+                // Show success message
+                alert('Dziękujemy za wysłanie wiadomości! Odpowiemy najszybciej jak to możliwe.');
+            });
+        }
+        
+        function renderErrorPage() {
+            mainContent.innerHTML = `
+                <section class="error-section">
+                    <div class="container">
+                        <h1>404</h1>
+                        <h2>Strona nie została znaleziona</h2>
+                        <p>Przepraszamy, ale strona, której szukasz, nie istnieje.</p>
+                        <a href="#" class="btn" id="error-home-btn">Wróć do strony głównej</a>
+                    </div>
+                </section>
+            `;
+            
+            // Add event listener for the home button
+            document.getElementById('error-home-btn').addEventListener('click', (e) => {
+                e.preventDefault();
+                document.getElementById('home-link').click();
+            });
+        }
+        
+        // Check URL on page load and render the appropriate page
+        document.addEventListener('DOMContentLoaded', () => {
+            // Load saved theme
+            loadSavedTheme();
+            
+            // Check URL path and query parameters
+            const url = window.location.href;
+            const urlObj = new URL(url);
+            const path = urlObj.pathname;
+            const search = urlObj.search;
+            
+            if (search.includes('portfolio')) {
+                let stateObj = { page: 'portfolio' };
+                document.title = 'Portfolio | Mikołaj Olesiński';
+                history.replaceState(stateObj, "portfolio", pageUrls.portfolio);
+                renderPortfolioPage();
+            } else if (search.includes('skills')) {
+                let stateObj = { page: 'skills' };
+                document.title = 'Umiejętności | Mikołaj Olesiński';
+                history.replaceState(stateObj, "skills", pageUrls.skills);
+                renderSkillsPage();
+            } else if (search.includes('guestbook')) {
+                let stateObj = { page: 'guestbook' };
+                document.title = 'Księga gości | Mikołaj Olesiński';
+                history.replaceState(stateObj, "guestbook", pageUrls.guestbook);
+                renderGuestbookPage();
+            } else if (search.includes('contact')) {
+                let stateObj = { page: 'contact' };
+                document.title = 'Kontakt | Mikołaj Olesiński';
+                history.replaceState(stateObj, "contact", pageUrls.contact);
+                renderContactPage();
+            } else if (search.includes('404')) {
+                let stateObj = { page: '404' };
+                document.title = '404 | Mikołaj Olesiński';
+                history.replaceState(stateObj, "404", pageUrls.error404);
+                renderErrorPage();
+            } else {
+                // Default to home page
+                let stateObj = { page: 'home' };
+                document.title = 'Portfolio Mikołaja Olesińskiego';
+                history.replaceState(stateObj, "home", pageUrls.home);
+                renderHomePage();
+            }
+        });
+    </script>
+</body>
+</html>
