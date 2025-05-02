@@ -1,0 +1,85 @@
+html, body {
+    font-family: sans-serif;
+    text-align: center;
+    height: 100%;
+    margin: 0;
+    padding: 0;
+    width: 100%;
+  }
+  
+  .container {
+    margin: auto;
+    text-align: center;
+    max-width: 800px;
+  }
+  
+  main {
+    padding: 1rem;
+    font-size: 1rem;
+  }
+  
+  .title {
+    font-size: 2rem;
+    animation: fadeIn 2s ease-in-out;
+  }
+  
+  @keyframes fadeIn {
+    from {
+      opacity: 0;
+      transform: translateY(-20px);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+  
+  nav ul {
+    list-style: none;
+    display: flex;
+    justify-content: center;
+    padding: 0;
+  }
+  
+  nav li {
+    margin: 0 10px;
+  }
+  
+  nav a {
+    text-decoration: none;
+    color: #db4938;
+  }
+  
+  .facts-list {
+    text-align: left;
+    max-width: 600px;
+    margin: 0 auto;
+  }
+  
+  .facts-list li {
+    margin-bottom: 10px;
+  }
+  
+  .memy-grid {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
+  
+  .mem-item {
+    margin-bottom: 20px;
+  }
+  
+  footer {
+    padding: 1rem;
+    margin-top: 2rem;
+  }
+  
+  button {
+    background-color: #db4938;
+    color: white;
+    border: none;
+    padding: 8px 15px;
+    border-radius: 4px;
+    cursor: pointer;
+  }
