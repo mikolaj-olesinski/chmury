@@ -26,7 +26,7 @@ const filesToCache = [
   '/images/apple-splash-1668-2388.jpg',
   '/images/apple-splash-2048-2732.jpg',
   '/images/apple-icon-180.png',
-  '/favicon.ico'
+  '/images/favicon.ico'
 ];
 
 // Instalacja Service Workera
