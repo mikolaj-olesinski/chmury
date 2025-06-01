@@ -1,0 +1,25 @@
+# terraform.tfvars.example - Przykład konfiguracji zmiennych
+# Skopiuj ten plik do terraform.tfvars i dostosuj wartości
+
+# AWS Configuration
+aws_region = "us-east-1"
+
+# Project Configuration
+project_name = "radio-app-lab5"
+
+# Network Configuration  
+vpc_cidr           = "10.0.0.0/16"
+public_subnet_cidr = "10.0.1.0/24"
+
+# EC2 Configuration
+instance_type = "t2.micro"
+ami_id       = "ami-0e2c8caa4b6378d8c"  # Ubuntu 24.04 LTS in us-east-1
+
+# GitHub Repository
+github_repo = "https://github.com/mikolaj-olesinski/chmury.git"
+
+# SSH Key (generate with: ssh-keygen -t rsa -b 4096 -f radio-app-key)
+# public_key = "ssh-rsa AAAAB3NzaC1yc2EAAAA... your-email@example.com"
+
+# Key pair name
+key_name = "radio-app-terraform-key"
