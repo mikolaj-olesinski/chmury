@@ -1,0 +1,203 @@
+body {
+  margin: 0;
+  padding: 0;
+  font-family: Arial, sans-serif;
+  background-color: black;
+  color: white;
+}
+
+.app {
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+}
+
+.header {
+  background-color: #222;
+  padding: 20px;
+  text-align: center;
+}
+
+.main-content {
+  flex-grow: 1;
+  padding: 20px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.radio-player {
+  margin-bottom: 20px;
+  text-align: center;
+  padding: 20px;
+  background-color: #333;
+  border-radius: 10px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+}
+
+.radio-player h2 {
+  color: #4CAF50;
+  margin-bottom: 20px;
+}
+
+.date-time {
+  text-align: center;
+  margin-top: 20px;
+}
+
+.date-time p {
+  margin: 5px 0;
+  font-size: 14px;
+  color: #ccc;
+}
+
+.footer {
+  background-color: #222;
+  padding: 10px;
+  text-align: center;
+}
+
+button {
+  background-color: #4CAF50;
+  border: none;
+  color: white;
+  padding: 10px 24px;
+  margin: 10px;
+  font-size: 16px;
+  cursor: pointer;
+  border-radius: 5px;
+  transition: background-color 0.3s;
+}
+
+button:hover {
+  background-color: #45a049;
+}
+
+select {
+  margin: 10px;
+  padding: 8px;
+  font-size: 14px;
+  border: none;
+  border-radius: 5px;
+  background-color: #555;
+  color: white;
+}
+
+input[type="range"] {
+  margin: 10px;
+  width: 200px;
+}
+
+label {
+  margin-right: 10px;
+  font-size: 14px;
+}
+
+/* Privacy Popup Styles */
+.privacy-popup {
+  position: fixed;
+  bottom: 20px;
+  right: 20px;
+  background-color: #333;
+  color: white;
+  padding: 20px;
+  border-radius: 10px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.5);
+  max-width: 300px;
+  z-index: 1000;
+}
+
+.privacy-popup h3 {
+  margin: 0 0 10px 0;
+  color: #4CAF50;
+}
+
+.privacy-popup p {
+  margin: 10px 0;
+  font-size: 12px;
+  line-height: 1.4;
+}
+
+.privacy-popup button {
+  background-color: #4CAF50;
+  border: none;
+  color: white;
+  padding: 8px 16px;
+  margin: 5px;
+  font-size: 12px;
+  cursor: pointer;
+  border-radius: 3px;
+}
+
+.privacy-popup button:hover {
+  background-color: #45a049;
+}
+
+.popup-buttons {
+  display: flex;
+  justify-content: space-between;
+  margin-top: 15px;
+}
+
+button:disabled {
+  background-color: #666;
+  cursor: not-allowed;
+  opacity: 0.6;
+}
+
+button:disabled:hover {
+  background-color: #666;
+}
+
+.error-message {
+  color: #ff6b6b;
+  margin: 10px 0;
+  font-size: 14px;
+  text-align: center;
+}
+
+.volume-control {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin: 15px 0;
+}
+
+.volume-control span {
+  margin-left: 10px;
+  font-size: 12px;
+  color: #ccc;
+}
+
+.station-info {
+  font-size: 12px;
+  color: #ccc;
+  margin-top: 10px;
+  font-style: italic;
+}
+
+/* Location and Browser Info Styles */
+.info-section {
+  background-color: #444;
+  padding: 15px;
+  margin: 10px;
+  border-radius: 8px;
+  max-width: 600px;
+  text-align: left;
+}
+
+.info-section h3 {
+  color: #4CAF50;
+  margin: 0 0 15px 0;
+  font-size: 16px;
+}
+
+.info-section p {
+  margin: 8px 0;
+  font-size: 13px;
+  word-break: break-all;
+}
+
+.info-section strong {
+  color: #ccc;
+}
