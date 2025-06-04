@@ -89,7 +89,7 @@ const musicData = {
   }
 };
 
-const RadioPlayer = () => {
+const RadioPlayer = ({ onStatsUpdate }) => {
   const [isPlaying, setIsPlaying] = useState(false);
   const [volume, setVolume] = useState(0.7);
   const [currentGenre, setCurrentGenre] = useState(Object.keys(musicData)[0]);
@@ -263,6 +263,11 @@ const RadioPlayer = () => {
     
     setError(null);
     setConnectionQuality('unknown');
+    
+    // Aktualizuj statystyki
+    if (onStatsUpdate) {
+      onStatsUpdate(newGenre, 'change');
+    }
   };
 
   const handleStationChange = (e) => {
@@ -270,6 +275,11 @@ const RadioPlayer = () => {
     setCurrentStation(newStation);
     setError(null);
     setConnectionQuality('unknown');
+    
+    // Aktualizuj statystyki
+    if (onStatsUpdate) {
+      onStatsUpdate(currentGenre, 'change');
+    }
   };
 
   const getConnectionIcon = () => {

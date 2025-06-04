@@ -135,25 +135,26 @@ const PrivacyPopup = () => {
     <div className="privacy-popup">
       <h3>
         <i className="fas fa-cookie-bite"></i> 
-        Polityka Prywatności
+        Cookies i Prywatność
       </h3>
       
       <p>
-        Ta strona wykorzystuje pliki cookies oraz zbiera dane geolokalizacyjne
-        w celu poprawy jakości usług i personalizacji treści.
+        Ta strona wykorzystuje pliki cookies w celu poprawy jakości usług, 
+        personalizacji treści i analizy statystyk użytkowania.
       </p>
       
       <p><strong>Zbieramy następujące dane:</strong></p>
       <ul>
-        <li>Lokalizacja geograficzna (za Twoją zgodą)</li>
-        <li>Informacje o przeglądarce i systemie</li>
-        <li>Preferencje użytkownika (głośność, stacja)</li>
-        <li>Dane o korzystaniu z aplikacji</li>
+        <li>Preferencje użytkownika (gatunek muzyczny, stacja, głośność)</li>
+        <li>Statystyki sesji (czas słuchania, zmiany stacji)</li>
+        <li>Podstawowe informacje o przeglądarce</li>
+        <li>Dane techniczne o jakości połączenia</li>
       </ul>
       
       <p style={{ fontSize: '0.8rem', marginTop: '1rem' }}>
-        <strong>Twoje prawa:</strong> Możesz w każdej chwili zmienić swoje preferencje, 
-        poprosić o usunięcie danych lub ograniczyć ich przetwarzanie.
+        <strong>Twoje prawa:</strong> Możesz w każdej chwili zmienić swoje preferencje 
+        lub poprosić o ograniczenie przetwarzania danych. Wszystkie dane są 
+        przetwarzane lokalnie w Twojej przeglądarce.
       </p>
       
       <p style={{ 
@@ -163,7 +164,8 @@ const PrivacyPopup = () => {
         fontStyle: 'italic'
       }}>
         Kontynuując korzystanie ze strony, wyrażasz zgodę na przetwarzanie
-        Twoich danych zgodnie z RODO i naszą polityką prywatności.
+        Twoich danych zgodnie z RODO. Dane są przechowywane tylko lokalnie
+        i nie są wysyłane na żadne serwery zewnętrzne.
       </p>
       
       <div className="popup-buttons">
