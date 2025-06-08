@@ -45,12 +45,15 @@ body {
     transform: translateY(100vh) rotate(0deg);
     opacity: 0;
   }
+
   10% {
     opacity: 1;
   }
+
   90% {
     opacity: 1;
   }
+
   to {
     transform: translateY(-100px) rotate(360deg);
     opacity: 0;
@@ -126,9 +129,17 @@ body {
 }
 
 @keyframes gradientShift {
-  0% { background-position: 0% 50%; }
-  50% { background-position: 100% 50%; }
-  100% { background-position: 0% 50%; }
+  0% {
+    background-position: 0% 50%;
+  }
+
+  50% {
+    background-position: 100% 50%;
+  }
+
+  100% {
+    background-position: 0% 50%;
+  }
 }
 
 .radio-player h2 {
@@ -419,6 +430,200 @@ body {
   font-weight: 500;
 }
 
+/* Location-specific styles - zaktualizowane */
+.location-status {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  margin-bottom: 0.8rem;
+}
+
+.location-success {
+  color: #4ade80;
+}
+
+.location-warning {
+  color: #f59e0b;
+}
+
+.location-error {
+  color: #f87171;
+}
+
+.location-checking {
+  color: #667eea;
+}
+
+.location-info-box {
+  padding: 0.6rem 0.8rem;
+  border-radius: 6px;
+  border: 1px solid;
+  margin-bottom: 0.8rem;
+  font-size: 0.85rem;
+}
+
+.location-success-box {
+  background: rgba(74, 222, 128, 0.1);
+  border-color: rgba(74, 222, 128, 0.3);
+}
+
+.location-warning-box {
+  background: rgba(245, 158, 11, 0.1);
+  border-color: rgba(245, 158, 11, 0.3);
+}
+
+.location-info-box-secondary {
+  background: rgba(102, 126, 234, 0.1);
+  border-color: rgba(102, 126, 234, 0.3);
+}
+
+.location-timestamp {
+  margin-top: 0.8rem;
+  padding: 0.4rem;
+  background: rgba(255, 255, 255, 0.05);
+  border-radius: 4px;
+  text-align: center;
+  font-size: 0.7rem;
+  color: rgba(255, 255, 255, 0.6);
+}
+
+/* World clock & location combined section */
+.combined-section-divider {
+  margin: 1.5rem 0;
+  padding: 1.5rem 0;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.world-clock-item {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0.6rem;
+  background: rgba(255, 255, 255, 0.05);
+  border-radius: 8px;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.world-clock-city {
+  font-weight: 500;
+  font-size: 0.9rem;
+}
+
+.world-clock-date {
+  font-size: 0.75rem;
+  color: rgba(255, 255, 255, 0.6);
+}
+
+.world-clock-time {
+  font-family: monospace;
+  font-size: 1.1rem;
+  font-weight: 600;
+  color: #667eea;
+}
+
+.stats-big-number {
+  font-size: 1.5rem;
+  font-weight: 700;
+  color: #667eea;
+}
+
+.stats-small-number {
+  font-size: 1.2rem;
+  font-weight: 600;
+}
+
+.stats-label {
+  font-size: 0.8rem;
+  color: rgba(255, 255, 255, 0.6);
+}
+
+.stats-small-label {
+  font-size: 0.75rem;
+  color: rgba(255, 255, 255, 0.6);
+}
+
+.favorite-genre-box {
+  padding: 0.8rem;
+  background: rgba(102, 126, 234, 0.1);
+  border: 1px solid rgba(102, 126, 234, 0.3);
+  border-radius: 8px;
+  text-align: center;
+}
+
+.session-start-info {
+  font-size: 0.75rem;
+  color: rgba(255, 255, 255, 0.6);
+  text-align: center;
+}
+
+.system-info-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 0.5rem;
+  margin-top: 0.5rem;
+}
+
+.system-info-item {
+  padding: 0.5rem;
+  border-radius: 6px;
+  text-align: center;
+  font-size: 0.8rem;
+}
+
+.network-info-box {
+  margin-top: 1rem;
+  padding: 0.8rem;
+  background: rgba(255, 255, 255, 0.05);
+  border-radius: 8px;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.user-agent-details {
+  margin-top: 1rem;
+}
+
+.user-agent-summary {
+  cursor: pointer;
+  color: #667eea;
+  font-size: 0.9rem;
+}
+
+.user-agent-content {
+  font-size: 0.7rem;
+  word-break: break-all;
+  margin-top: 0.5rem;
+  padding: 0.5rem;
+  background: rgba(255, 255, 255, 0.05);
+  border-radius: 6px;
+}
+
+/* Retry button specific styles */
+.retry-button {
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  border: none;
+  color: white;
+  padding: 0.8rem 1rem;
+  border-radius: 8px;
+  cursor: pointer;
+  font-size: 0.9rem;
+  font-weight: 500;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  transition: all 0.3s ease;
+  width: 100%;
+}
+
+.retry-button:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 10px 25px rgba(102, 126, 234, 0.3);
+}
+
+.retry-button:active {
+  transform: translateY(0);
+}
+
 /* ==================== PRIVACY POPUP STYLES ==================== */
 .privacy-popup {
   position: fixed;
@@ -452,7 +657,8 @@ body {
   gap: 0.5rem;
 }
 
-.privacy-popup p, .privacy-popup ul {
+.privacy-popup p,
+.privacy-popup ul {
   font-size: 0.85rem;
   line-height: 1.5;
   color: rgba(255, 255, 255, 0.8);
@@ -535,7 +741,9 @@ body {
 }
 
 @keyframes spin {
-  to { transform: rotate(360deg); }
+  to {
+    transform: rotate(360deg);
+  }
 }
 
 /* ==================== RESPONSIVE DESIGN ==================== */
@@ -543,46 +751,79 @@ body {
   .header h1 {
     font-size: 2rem;
   }
-  
+
   .main-content {
     padding: 2rem 1rem;
   }
-  
+
   .radio-player {
     padding: 2rem 1.5rem;
   }
-  
+
   .info-grid {
     grid-template-columns: 1fr;
   }
-  
+
   .privacy-popup {
     bottom: 1rem;
     right: 1rem;
     left: 1rem;
     max-width: none;
   }
-  
+
   .volume-control {
     flex-direction: column;
     gap: 0.5rem;
   }
-  
+
   .volume-slider {
     width: 200px;
   }
-  
+
   .popup-buttons {
     flex-direction: column;
   }
-  
+
   .station-selector {
     gap: 1.5rem;
   }
-  
+
   .selector-group select {
     padding: 0.8rem 1rem;
     font-size: 0.9rem;
+  }
+
+  /* Mobile location styles - zaktualizowane */
+  .info-section {
+    padding: 1.5rem;
+  }
+
+  .location-status {
+    flex-direction: column;
+    text-align: center;
+    gap: 0.3rem;
+  }
+
+  .location-info-box {
+    padding: 0.5rem 0.6rem;
+    font-size: 0.8rem;
+  }
+
+  .combined-section-divider {
+    margin: 1rem 0;
+    padding: 1rem 0;
+  }
+
+  .world-clock-item {
+    padding: 0.5rem;
+  }
+
+  .world-clock-city {
+    font-size: 0.85rem;
+  }
+
+  .world-clock-time {
+    font-size: 1rem;
   }
 }
 
@@ -590,30 +831,59 @@ body {
   .header h1 {
     font-size: 1.8rem;
   }
-  
+
   .radio-player {
     padding: 1.5rem 1rem;
   }
-  
+
   .info-section {
     padding: 1.5rem;
   }
-  
+
   .play-button {
     min-width: 150px;
     padding: 0.8rem 1.5rem;
   }
-  
+
   .station-selector {
     gap: 1rem;
   }
-  
+
   .selector-group select {
     padding: 0.7rem 0.8rem;
     font-size: 0.85rem;
   }
-  
+
   .selector-label {
     font-size: 0.8rem;
+  }
+
+  /* Extra small screens location adjustments - zaktualizowane */
+  .info-section h3 {
+    font-size: 1.1rem;
+    flex-direction: column;
+    gap: 0.3rem;
+    text-align: center;
+  }
+
+  .location-info-box {
+    padding: 0.4rem 0.5rem;
+    font-size: 0.75rem;
+  }
+
+  .world-clock-item {
+    flex-direction: column;
+    text-align: center;
+    gap: 0.3rem;
+    padding: 0.4rem;
+  }
+
+  .world-clock-time {
+    font-size: 0.9rem;
+  }
+
+  .combined-section-divider {
+    margin: 0.8rem 0;
+    padding: 0.8rem 0;
   }
 }

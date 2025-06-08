@@ -11,3 +11,84 @@ code {
   font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
     monospace;
 }
+
+/* Reset dla lepszej kontroli nad stylami */
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+/* Usunięcie domyślnych marginesów dla elementów HTML */
+h1,
+h2,
+h3,
+h4,
+h5,
+h6,
+p,
+ul,
+ol,
+li,
+figure,
+figcaption,
+blockquote,
+dl,
+dd {
+  margin: 0;
+}
+
+/* Ustawienia dla lepszej dostępności */
+button,
+input,
+select,
+textarea {
+  font: inherit;
+}
+
+/* Responsive images */
+img,
+picture,
+video,
+canvas,
+svg {
+  display: block;
+  max-width: 100%;
+}
+
+/* Focus styles dla lepszej dostępności */
+button:focus-visible,
+input:focus-visible,
+select:focus-visible,
+textarea:focus-visible {
+  outline: 2px solid #667eea;
+  outline-offset: 2px;
+}
+
+/* Usunięcie domyślnych stylów dla list */
+ul,
+ol {
+  list-style: none;
+  padding: 0;
+}
+
+/* Podstawowe style dla linków */
+a {
+  color: inherit;
+  text-decoration: none;
+}
+
+a:hover {
+  text-decoration: underline;
+}
+
+/* Smooth scrolling */
+html {
+  scroll-behavior: smooth;
+}
+
+/* Lepsze renderowanie tekstu */
+body {
+  text-rendering: optimizeSpeed;
+  line-height: 1.5;
+}
