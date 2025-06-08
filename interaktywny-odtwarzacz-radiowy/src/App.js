@@ -51,8 +51,10 @@ function App() {
   const [browserInfo, setBrowserInfo] = useState(null);
   const [networkInfo, setNetworkInfo] = useState(null);
   const [location, setLocation] = useState(null);
-  const [locationStatus, setLocationStatus] = useState('checking'); // 'checking', 'success', 'denied', 'unavailable', 'timeout'
+  const [locationAddress, setLocationAddress] = useState(null); // Dodane dla miasta/kraju
+  const [locationStatus, setLocationStatus] = useState('checking'); // 'checking', 'success', 'denied', 'unavailable', 'timeout', 'disabled'
   const [locationError, setLocationError] = useState(null);
+  const [locationPermissionState, setLocationPermissionState] = useState('prompt'); // 'granted', 'denied', 'prompt'
 
   // Aktualizacja zegarów światowych
   useEffect(() => {
@@ -113,11 +115,77 @@ function App() {
     return () => clearInterval(timer);
   }, []);
 
-  // Funkcja do pobierania lokalizacji - uproszczona
-  const requestLocation = () => {
+  // Sprawdź stan uprawnień do geolokalizacji
+  const checkGeolocationPermission = async () => {
+    if ('permissions' in navigator) {
+      try {
+        const result = await navigator.permissions.query({ name: 'geolocation' });
+        setLocationPermissionState(result.state);
+
+        result.addEventListener('change', () => {
+          setLocationPermissionState(result.state);
+        });
+
+        return result.state;
+      } catch (error) {
+        console.warn('Nie można sprawdzić uprawnień do geolokalizacji:', error);
+        return 'prompt';
+      }
+    }
+    return 'prompt';
+  };
+
+  // Funkcja do reverse geocoding (pobranie miasta/kraju z współrzędnych)
+  const getLocationAddress = async (latitude, longitude) => {
+    try {
+      // Używamy darmowego API BigDataCloud do reverse geocoding
+      const response = await fetch(
+        `https://api.bigdatacloud.net/data/reverse-geocode-client?latitude=${latitude}&longitude=${longitude}&localityLanguage=pl`
+      );
+
+      if (response.ok) {
+        const data = await response.json();
+        setLocationAddress({
+          city: data.city || data.locality || data.principalSubdivision || 'Nieznane miasto',
+          country: data.countryName || 'Nieznany kraj',
+          countryCode: data.countryCode || '',
+          region: data.principalSubdivision || '',
+          locality: data.locality || ''
+        });
+      } else {
+        console.warn('Nie udało się pobrać adresu dla lokalizacji');
+        setLocationAddress({
+          city: 'Nieznane miasto',
+          country: 'Nieznany kraj',
+          countryCode: '',
+          region: '',
+          locality: ''
+        });
+      }
+    } catch (error) {
+      console.error('Błąd podczas reverse geocoding:', error);
+      setLocationAddress({
+        city: 'Nieznane miasto',
+        country: 'Nieznany kraj',
+        countryCode: '',
+        region: '',
+        locality: ''
+      });
+    }
+  };
+  const requestLocation = async () => {
     if (!navigator.geolocation) {
       setLocationStatus('unavailable');
-      setLocationError('Geolokalizacja nie jest obsługiwana.');
+      setLocationError('Geolokalizacja nie jest obsługiwana przez tę przeglądarkę.');
+      return;
+    }
+
+    // Sprawdź najpierw uprawnienia
+    const permissionState = await checkGeolocationPermission();
+
+    if (permissionState === 'denied') {
+      setLocationStatus('denied');
+      setLocationError('Uprawnienia do lokalizacji zostały odrzucone. Włącz je w ustawieniach przeglądarki.');
       return;
     }
 
@@ -125,22 +193,33 @@ function App() {
     setLocationError(null);
 
     const options = {
-      enableHighAccuracy: false,
-      timeout: 8000, // Skrócony timeout
-      maximumAge: 600000 // 10 minut cache
+      enableHighAccuracy: false, // Wyłącz wysoką dokładność dla szybszego odpytania
+      timeout: 5000, // Skrócony timeout do 5 sekund
+      maximumAge: 300000 // 5 minut cache (skrócony z 10 minut)
     };
 
     navigator.geolocation.getCurrentPosition(
       // Success callback
-      (position) => {
-        setLocation({
-          latitude: position.coords.latitude,
-          longitude: position.coords.longitude,
-          accuracy: position.coords.accuracy,
-          timestamp: new Date()
-        });
+      async (position) => {
+        const coords = position.coords;
+        const locationData = {
+          latitude: coords.latitude,
+          longitude: coords.longitude,
+          accuracy: coords.accuracy,
+          altitude: coords.altitude,
+          altitudeAccuracy: coords.altitudeAccuracy,
+          heading: coords.heading,
+          speed: coords.speed,
+          timestamp: new Date(position.timestamp)
+        };
+
+        setLocation(locationData);
         setLocationStatus('success');
         setLocationError(null);
+        console.log('Lokalizacja pobrana pomyślnie:', coords);
+
+        // Pobierz miasto i kraj
+        await getLocationAddress(coords.latitude, coords.longitude);
       },
       // Error callback
       (error) => {
@@ -149,25 +228,35 @@ function App() {
         switch (error.code) {
           case error.PERMISSION_DENIED:
             setLocationStatus('denied');
-            setLocationError('Dostęp odrzucony przez użytkownika.');
+            setLocationError('Dostęp do lokalizacji został odrzucony. Sprawdź ustawienia przeglądarki.');
             break;
           case error.POSITION_UNAVAILABLE:
             setLocationStatus('unavailable');
-            setLocationError('Lokalizacja niedostępna.');
+            setLocationError('Lokalizacja jest obecnie niedostępna. Sprawdź połączenie internetowe.');
             break;
           case error.TIMEOUT:
             setLocationStatus('timeout');
-            setLocationError('Przekroczono limit czasu.');
+            setLocationError('Przekroczono limit czasu pobierania lokalizacji.');
             break;
           default:
             setLocationStatus('unavailable');
-            setLocationError('Nieznany błąd lokalizacji.');
+            setLocationError(`Nieznany błąd lokalizacji: ${error.message}`);
             break;
         }
       },
       options
     );
   };
+
+  // Wyłącz sprawdzanie lokalizacji
+  const disableLocationTracking = () => {
+    setLocationStatus('disabled');
+    setLocation(null);
+    setLocationAddress(null);
+    setLocationError('Lokalizacja została wyłączona przez użytkownika.');
+  };
+
+  // Funkcja do aktualizacji statystyk
   const updateStats = (genre, action) => {
     setSessionStats(prev => {
       const newGenreStats = { ...prev.genreStats };
@@ -224,6 +313,25 @@ function App() {
         saveData: connection.saveData || false
       });
     }
+
+    // Automatyczne sprawdzenie lokalizacji po załadowaniu
+    const initLocationCheck = async () => {
+      const permissionState = await checkGeolocationPermission();
+
+      if (permissionState === 'granted') {
+        // Jeśli uprawnienia już są przyznane, pobierz lokalizację automatycznie
+        requestLocation();
+      } else if (permissionState === 'denied') {
+        setLocationStatus('denied');
+        setLocationError('Uprawnienia do lokalizacji zostały wcześniej odrzucone.');
+      } else {
+        // Dla 'prompt' nie rób nic automatycznie - czekaj na akcję użytkownika
+        setLocationStatus('prompt');
+        setLocationError(null);
+      }
+    };
+
+    initLocationCheck();
   }, []);
 
   // Formatowanie czasu
@@ -264,14 +372,68 @@ function App() {
 
             {/* Sekcja lokalizacji */}
             <div style={{ marginBottom: '1.5rem', paddingBottom: '1.5rem', borderBottom: '1px solid rgba(255, 255, 255, 0.1)' }}>
+
+              {locationStatus === 'prompt' && (
+                <div style={{ textAlign: 'center', padding: '0.8rem' }}>
+                  <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '0.5rem', marginBottom: '0.8rem' }}>
+                    <i className="fas fa-map-marker-alt" style={{ color: '#667eea' }}></i>
+                    <span style={{ fontSize: '0.9rem', fontWeight: '500' }}>Udostępnij lokalizację</span>
+                  </div>
+                  <div style={{ fontSize: '0.8rem', color: 'rgba(255, 255, 255, 0.7)', marginBottom: '1rem' }}>
+                    Pozwól na dostęp do lokalizacji, aby zobaczyć swoje współrzędne
+                  </div>
+                  <div style={{ display: 'flex', gap: '0.5rem', justifyContent: 'center' }}>
+                    <button
+                      onClick={requestLocation}
+                      style={{
+                        background: 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)',
+                        border: 'none',
+                        color: 'white',
+                        padding: '0.5rem 1rem',
+                        borderRadius: '8px',
+                        cursor: 'pointer',
+                        fontSize: '0.8rem',
+                        fontWeight: '500',
+                        display: 'flex',
+                        alignItems: 'center',
+                        gap: '0.3rem',
+                        transition: 'all 0.3s ease'
+                      }}
+                    >
+                      <i className="fas fa-location-arrow"></i>
+                      Pobierz lokalizację
+                    </button>
+                    <button
+                      onClick={disableLocationTracking}
+                      style={{
+                        background: 'rgba(255, 255, 255, 0.1)',
+                        border: '1px solid rgba(255, 255, 255, 0.2)',
+                        color: 'rgba(255, 255, 255, 0.7)',
+                        padding: '0.5rem 1rem',
+                        borderRadius: '8px',
+                        cursor: 'pointer',
+                        fontSize: '0.8rem',
+                        fontWeight: '500',
+                        display: 'flex',
+                        alignItems: 'center',
+                        gap: '0.3rem'
+                      }}
+                    >
+                      <i className="fas fa-times"></i>
+                      Pomiń
+                    </button>
+                  </div>
+                </div>
+              )}
+
               {locationStatus === 'checking' && (
                 <div style={{ textAlign: 'center', padding: '0.8rem' }}>
-                  <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '0.5rem', marginBottom: '0.3rem' }}>
+                  <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '0.5rem', marginBottom: '0.5rem' }}>
                     <i className="fas fa-spinner fa-spin location-checking"></i>
                     <span style={{ fontSize: '0.9rem', fontWeight: '500' }}>Pobieranie lokalizacji...</span>
                   </div>
                   <div style={{ fontSize: '0.75rem', color: 'rgba(255, 255, 255, 0.6)' }}>
-                    Sprawdź czy przeglądarka pyta o zgodę
+                    Sprawdzamy Twoje położenie i miasto
                   </div>
                 </div>
               )}
@@ -282,10 +444,28 @@ function App() {
                     <i className="fas fa-map-marker-alt location-success"></i>
                     <strong className="location-success">Twoja pozycja</strong>
                   </div>
+
+                  {/* Miasto i kraj */}
+                  {locationAddress && (
+                    <div style={{ fontSize: '0.9rem', color: 'rgba(255, 255, 255, 0.95)', marginBottom: '0.5rem' }}>
+                      <strong>🏙️ {locationAddress.city}, {locationAddress.country}</strong>
+                      {locationAddress.region && locationAddress.region !== locationAddress.city && (
+                        <div style={{ fontSize: '0.8rem', color: 'rgba(255, 255, 255, 0.8)' }}>
+                          {locationAddress.region}
+                        </div>
+                      )}
+                    </div>
+                  )}
+
+                  {/* Współrzędne */}
                   <div style={{ fontSize: '0.85rem', color: 'rgba(255, 255, 255, 0.9)' }}>
                     <strong>📍 {location.latitude.toFixed(4)}°, {location.longitude.toFixed(4)}°</strong>
                     <div style={{ fontSize: '0.75rem', marginTop: '0.3rem', color: 'rgba(255, 255, 255, 0.7)' }}>
                       Dokładność: ±{Math.round(location.accuracy)}m
+                      {location.altitude && ` • Wysokość: ${Math.round(location.altitude)}m`}
+                    </div>
+                    <div style={{ fontSize: '0.7rem', marginTop: '0.3rem', color: 'rgba(255, 255, 255, 0.6)' }}>
+                      Pobrano: {location.timestamp.toLocaleTimeString('pl-PL')}
                     </div>
                   </div>
                 </div>
@@ -301,6 +481,12 @@ function App() {
                     <div style={{ fontSize: '0.8rem', color: 'rgba(255, 255, 255, 0.8)' }}>
                       {locationError}
                     </div>
+
+                    {locationStatus === 'denied' && (
+                      <div style={{ fontSize: '0.75rem', color: 'rgba(255, 255, 255, 0.6)', marginTop: '0.5rem' }}>
+                        💡 Aby włączyć lokalizację: kliknij ikonę 🛡️ w pasku adresu przeglądarki
+                      </div>
+                    )}
                   </div>
 
                   <button
@@ -318,7 +504,8 @@ function App() {
                       alignItems: 'center',
                       justifyContent: 'center',
                       gap: '0.3rem',
-                      transition: 'all 0.3s ease'
+                      transition: 'all 0.3s ease',
+                      marginTop: '0.5rem'
                     }}
                     onMouseEnter={(e) => {
                       e.target.style.background = 'rgba(102, 126, 234, 0.3)';
@@ -331,6 +518,43 @@ function App() {
                   >
                     <i className="fas fa-redo"></i>
                     Spróbuj ponownie
+                  </button>
+                </div>
+              )}
+
+              {locationStatus === 'disabled' && (
+                <div className="location-info-box location-info-box-secondary">
+                  <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', marginBottom: '0.3rem' }}>
+                    <i className="fas fa-location-slash" style={{ color: '#6b7280' }}></i>
+                    <strong style={{ fontSize: '0.85rem' }}>Lokalizacja wyłączona</strong>
+                  </div>
+                  <div style={{ fontSize: '0.8rem', color: 'rgba(255, 255, 255, 0.8)' }}>
+                    Lokalizacja została wyłączona na Twoje życzenie
+                  </div>
+                  <button
+                    onClick={() => {
+                      setLocationStatus('prompt');
+                      setLocationError(null);
+                      setLocationAddress(null);
+                    }}
+                    style={{
+                      width: '100%',
+                      background: 'rgba(102, 126, 234, 0.2)',
+                      border: '1px solid rgba(102, 126, 234, 0.4)',
+                      color: '#667eea',
+                      padding: '0.5rem 0.8rem',
+                      borderRadius: '6px',
+                      cursor: 'pointer',
+                      fontSize: '0.8rem',
+                      display: 'flex',
+                      alignItems: 'center',
+                      justifyContent: 'center',
+                      gap: '0.3rem',
+                      marginTop: '0.5rem'
+                    }}
+                  >
+                    <i className="fas fa-location-arrow"></i>
+                    Włącz ponownie
                   </button>
                 </div>
               )}

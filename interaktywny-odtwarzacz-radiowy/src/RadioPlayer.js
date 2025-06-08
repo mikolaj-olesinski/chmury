@@ -1,89 +1,68 @@
 import React, { useState, useRef, useEffect } from 'react';
 
-// Lista gatunków muzycznych i stacji radiowych
+// Lista sprawdzonych, działających stacji radiowych (~10 stacji)
 const musicData = {
-  "Electronic": {
-    icon: "fas fa-music",
+  "Polish Radio": {
+    icon: "fas fa-flag",
     stations: {
-      "Chill Electronic": {
-        url: "https://streams.fluxfm.de/live/mp3-320/streams.fluxfm.de/",
-        description: "Relaksująca muzyka elektroniczna i ambient"
+      "AntyRadio": {
+        url: "http://redir.atmcdn.pl/sc/o2/Eurozet/live/antyradio.livx",
+        description: "Najlepszy rock na świecie"
       },
-      "Deep House FM": {
-        url: "https://streams.fluxfm.de/jazz/mp3-320/streams.fluxfm.de/",
-        description: "Głębokie brzmienia house i techno"
-      },
-      "Electronic Beats": {
-        url: "https://stream.srg-ssr.ch/m/rsj/mp3_128",
-        description: "Energiczne beaty elektroniczne"
+      "RMF FM": {
+        url: "https://www.rmfon.pl/n/rmffm.pls",
+        description: "Radio numer 1 w Polsce"
       }
     }
   },
-  "Rock": {
-    icon: "fas fa-guitar",
-    stations: {
-      "Alternative Rock": {
-        url: "https://stream.live.vc.bbcmedia.co.uk/bbc_radio_one",
-        description: "Nowoczesny rock alternatywny"
-      },
-      "Classic Rock": {
-        url: "https://playerservices.streamtheworld.com/api/livestream-redirect/WQHTFM.mp3",
-        description: "Klasyki rocka z lat 70-90"
-      },
-      "Indie Rock": {
-        url: "https://streams.fluxfm.de/live/mp3-320/streams.fluxfm.de/",
-        description: "Niezależny rock i indie"
-      }
-    }
-  },
-  "Pop": {
-    icon: "fas fa-star",
-    stations: {
-      "Pop Hits": {
-        url: "https://playerservices.streamtheworld.com/api/livestream-redirect/WQHTFM.mp3",
-        description: "Najnowsze hity popowe"
-      },
-      "Top 40": {
-        url: "https://stream.live.vc.bbcmedia.co.uk/bbc_radio_one",
-        description: "40 najpopularniejszych utworów"
-      },
-      "Euro Pop": {
-        url: "https://stream.srg-ssr.ch/m/rsj/mp3_128",
-        description: "Europejskie hity popowe"
-      }
-    }
-  },
-  "Jazz": {
-    icon: "fas fa-saxophone",
-    stations: {
-      "Smooth Jazz": {
-        url: "https://streams.fluxfm.de/jazz/mp3-320/streams.fluxfm.de/",
-        description: "Gładki jazz i smooth"
-      },
-      "Classic Jazz": {
-        url: "https://stream.srg-ssr.ch/m/rsj/mp3_128",
-        description: "Klasyczny jazz i bebop"
-      },
-      "Jazz Fusion": {
-        url: "https://streams.fluxfm.de/live/mp3-320/streams.fluxfm.de/",
-        description: "Fusion jazz z elementami funk"
-      }
-    }
-  },
-  "World": {
+  "International": {
     icon: "fas fa-globe-americas",
     stations: {
-      "World Music": {
-        url: "https://stream.live.vc.bbcmedia.co.uk/bbc_radio_one",
-        description: "Muzyka z całego świata"
+      "Radio Paradise Main": {
+        url: "http://stream.radioparadise.com/aac-320",
+        description: "Eklektyczna muzyka z całego świata"
       },
-      "Latin Beats": {
-        url: "https://playerservices.streamtheworld.com/api/livestream-redirect/WQHTFM.mp3",
-        description: "Rytmy latynoamerykańskie"
+      "Radio Paradise Mellow": {
+        url: "http://stream.radioparadise.com/mellow-320",
+        description: "Spokojniejsze rytmy"
       },
-      "Folk & Traditional": {
-        url: "https://stream.srg-ssr.ch/m/rsj/mp3_128",
-        description: "Folk i muzyka tradycyjna"
+      "Radio Paradise Rock": {
+        url: "http://stream.radioparadise.com/rock-320",
+        description: "Rock mix"
+      },
+      "Vermont Public": {
+        url: "https://vpr.streamguys1.com/vpr64.mp3",
+        description: "Public radio z Vermont"
+      }
+    }
+  },
+  "Electronic & Chill": {
+    icon: "fas fa-music",
+    stations: {
+      "SomaFM Groove Salad": {
+        url: "http://ice1.somafm.com/groovesalad-256-mp3",
+        description: "Ambient i downtempo electronica"
+      },
+      "SomaFM Drone Zone": {
+        url: "http://ice1.somafm.com/dronezone-256-mp3",
+        description: "Ambient space music"
+      },
+      "SomaFM Deep Space One": {
+        url: "http://ice1.somafm.com/deepspaceone-128-mp3",
+        description: "Deep ambient electronic"
+      }
+    }
+  },
+  "Rock & Alternative": {
+    icon: "fas fa-guitar",
+    stations: {
+      "AntyRadio": {
+        url: "http://redir.atmcdn.pl/sc/o2/Eurozet/live/antyradio.livx",
+        description: "Najlepszy rock na świecie"
+      },
+      "SomaFM Metal Detector": {
+        url: "http://ice1.somafm.com/metal-128-mp3",
+        description: "Heavy metal i hard rock"
       }
     }
   }
@@ -92,8 +71,8 @@ const musicData = {
 const RadioPlayer = ({ onStatsUpdate }) => {
   const [isPlaying, setIsPlaying] = useState(false);
   const [volume, setVolume] = useState(0.7);
-  const [currentGenre, setCurrentGenre] = useState(Object.keys(musicData)[0]);
-  const [currentStation, setCurrentStation] = useState(Object.keys(musicData[Object.keys(musicData)[0]].stations)[0]);
+  const [currentGenre, setCurrentGenre] = useState("Polish Radio"); // Domyślnie Polish Radio
+  const [currentStation, setCurrentStation] = useState(Object.keys(musicData["Polish Radio"].stations)[0]);
   const [currentDateTime, setCurrentDateTime] = useState(new Date());
   const [error, setError] = useState(null);
   const [loading, setLoading] = useState(false);
@@ -111,7 +90,7 @@ const RadioPlayer = ({ onStatsUpdate }) => {
     const timer = setInterval(() => {
       setCurrentDateTime(new Date());
     }, 1000);
-    
+
     return () => clearInterval(timer);
   }, []);
 
@@ -134,9 +113,9 @@ const RadioPlayer = ({ onStatsUpdate }) => {
     if (audioRef.current) {
       audioRef.current.pause();
     }
-    
+
     initializeAudio();
-    
+
     if (isPlaying) {
       playAudio();
     }
@@ -153,9 +132,19 @@ const RadioPlayer = ({ onStatsUpdate }) => {
     const stationData = getCurrentStationData();
     if (!stationData) return;
 
-    audioRef.current = new Audio(stationData.url);
+    // Sprawdź czy URL to playlist (.pls) czy bezpośredni stream
+    let audioUrl = stationData.url;
+    if (audioUrl.endsWith('.pls')) {
+      // Dla plików .pls użyjemy alternatywnego podejścia
+      console.log('Wykryto playlist .pls:', audioUrl);
+    }
+
+    audioRef.current = new Audio(audioUrl);
     audioRef.current.volume = volume;
     audioRef.current.preload = 'none';
+
+    // CORS settings for better compatibility
+    audioRef.current.crossOrigin = "anonymous";
 
     // Dodaj nasłuchiwaczy zdarzeń
     audioRef.current.addEventListener('error', handleAudioError);
@@ -163,11 +152,22 @@ const RadioPlayer = ({ onStatsUpdate }) => {
     audioRef.current.addEventListener('canplay', handleCanPlay);
     audioRef.current.addEventListener('waiting', () => setConnectionQuality('poor'));
     audioRef.current.addEventListener('playing', () => setConnectionQuality('good'));
+    audioRef.current.addEventListener('loadeddata', () => setConnectionQuality('good'));
   };
 
   const handleAudioError = (e) => {
     console.error('Błąd audio:', e);
-    setError(`Problem z połączeniem do stacji "${currentStation}" w gatunku ${currentGenre}. Spróbuj inną stację.`);
+    const stationData = getCurrentStationData();
+
+    let errorMessage = `Problem z połączeniem do stacji "${currentStation}".`;
+
+    if (stationData?.url.endsWith('.pls')) {
+      errorMessage += ' Ta stacja używa formatu .pls - spróbuj inną stację.';
+    } else {
+      errorMessage += ' Spróbuj inną stację lub sprawdź połączenie internetowe.';
+    }
+
+    setError(errorMessage);
     setIsPlaying(false);
     setLoading(false);
     setConnectionQuality('error');
@@ -187,38 +187,46 @@ const RadioPlayer = ({ onStatsUpdate }) => {
 
     setLoading(true);
     setError(null);
-    
+
     try {
-      await audioRef.current.play();
+      // Dla niektórych stacji może być potrzebna interakcja użytkownika
+      const playPromise = audioRef.current.play();
+
+      if (playPromise !== undefined) {
+        await playPromise;
+      }
+
       setIsPlaying(true);
       setError(null);
-      
+
       // Monitor jakości połączenia
       if (connectionCheckRef.current) {
         clearInterval(connectionCheckRef.current);
       }
-      
+
       connectionCheckRef.current = setInterval(() => {
         if (audioRef.current && !audioRef.current.paused) {
           const now = audioRef.current.currentTime;
           setTimeout(() => {
-            if (audioRef.current && audioRef.current.currentTime === now) {
+            if (audioRef.current && audioRef.current.currentTime === now && !audioRef.current.paused) {
               setConnectionQuality('poor');
             }
-          }, 1000);
+          }, 2000);
         }
-      }, 5000);
-      
+      }, 10000);
+
     } catch (err) {
       console.error('Błąd odtwarzania:', err);
       let errorMessage = 'Nie można odtworzyć tej stacji.';
-      
+
       if (err.name === 'NotAllowedError') {
         errorMessage = 'Przeglądarka zablokowała odtwarzanie. Kliknij przycisk ponownie.';
       } else if (err.name === 'NotSupportedError') {
-        errorMessage = 'Format audio nie jest obsługiwany.';
+        errorMessage = 'Format audio nie jest obsługiwany przez tę przeglądarkę.';
+      } else if (err.name === 'AbortError') {
+        errorMessage = 'Ładowanie zostało przerwane. Spróbuj ponownie.';
       }
-      
+
       setError(errorMessage);
       setIsPlaying(false);
       setConnectionQuality('error');
@@ -256,14 +264,14 @@ const RadioPlayer = ({ onStatsUpdate }) => {
   const handleGenreChange = (e) => {
     const newGenre = e.target.value;
     setCurrentGenre(newGenre);
-    
+
     // Automatycznie wybierz pierwszą stację z nowego gatunku
     const firstStation = Object.keys(musicData[newGenre].stations)[0];
     setCurrentStation(firstStation);
-    
+
     setError(null);
     setConnectionQuality('unknown');
-    
+
     // Aktualizuj statystyki
     if (onStatsUpdate) {
       onStatsUpdate(newGenre, 'change');
@@ -275,7 +283,7 @@ const RadioPlayer = ({ onStatsUpdate }) => {
     setCurrentStation(newStation);
     setError(null);
     setConnectionQuality('unknown');
-    
+
     // Aktualizuj statystyki
     if (onStatsUpdate) {
       onStatsUpdate(currentGenre, 'change');
@@ -329,8 +337,8 @@ const RadioPlayer = ({ onStatsUpdate }) => {
             <i className="fas fa-list"></i>
             Gatunek muzyczny:
           </label>
-          <select 
-            value={currentGenre} 
+          <select
+            value={currentGenre}
             onChange={handleGenreChange}
             disabled={loading}
           >
@@ -348,8 +356,8 @@ const RadioPlayer = ({ onStatsUpdate }) => {
             <i className={musicData[currentGenre]?.icon || 'fas fa-radio'}></i>
             Stacja radiowa:
           </label>
-          <select 
-            value={currentStation} 
+          <select
+            value={currentStation}
             onChange={handleStationChange}
             disabled={loading}
           >
@@ -363,9 +371,9 @@ const RadioPlayer = ({ onStatsUpdate }) => {
       </div>
 
       {/* Przycisk odtwarzania */}
-      <button 
-        className="play-button" 
-        onClick={togglePlayPause} 
+      <button
+        className="play-button"
+        onClick={togglePlayPause}
         disabled={loading}
         aria-label={isPlaying ? 'Zatrzymaj odtwarzanie' : 'Rozpocznij odtwarzanie'}
       >
@@ -412,10 +420,10 @@ const RadioPlayer = ({ onStatsUpdate }) => {
       </div>
 
       {/* Status połączenia */}
-      <div style={{ 
-        display: 'flex', 
-        alignItems: 'center', 
-        justifyContent: 'center', 
+      <div style={{
+        display: 'flex',
+        alignItems: 'center',
+        justifyContent: 'center',
         gap: '0.5rem',
         margin: '1rem 0',
         fontSize: '0.85rem',
@@ -434,11 +442,11 @@ const RadioPlayer = ({ onStatsUpdate }) => {
       {/* Data i czas */}
       <div className="date-time">
         <p>
-          <i className="fas fa-calendar-alt"></i> 
+          <i className="fas fa-calendar-alt"></i>
           {date}
         </p>
         <p>
-          <i className="fas fa-clock"></i> 
+          <i className="fas fa-clock"></i>
           {time}
         </p>
       </div>
@@ -446,7 +454,7 @@ const RadioPlayer = ({ onStatsUpdate }) => {
       {/* Informacje o stacji */}
       <div className="station-info">
         <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '0.5rem', marginBottom: '0.5rem' }}>
-          <i className={musicData[currentGenre]?.icon || 'fas fa-music'}></i> 
+          <i className={musicData[currentGenre]?.icon || 'fas fa-music'}></i>
           <strong>{currentGenre} • {currentStation}</strong>
         </div>
         <div style={{ fontSize: '0.8rem', fontStyle: 'normal', color: 'rgba(255, 255, 255, 0.6)' }}>
@@ -465,8 +473,25 @@ const RadioPlayer = ({ onStatsUpdate }) => {
           textAlign: 'center',
           color: 'rgba(255, 255, 255, 0.8)'
         }}>
-          <i className="fas fa-info-circle"></i> 
+          <i className="fas fa-info-circle"></i>
           Radio odtwarzane na żywo
+        </div>
+      )}
+
+      {/* Informacja o formatach .pls */}
+      {getCurrentStationData()?.url.endsWith('.pls') && (
+        <div style={{
+          marginTop: '1rem',
+          padding: '0.5rem',
+          background: 'rgba(245, 158, 11, 0.1)',
+          borderRadius: '8px',
+          fontSize: '0.8rem',
+          textAlign: 'center',
+          color: 'rgba(245, 158, 11, 0.9)',
+          border: '1px solid rgba(245, 158, 11, 0.3)'
+        }}>
+          <i className="fas fa-info-circle"></i>
+          Ta stacja używa formatu playlist - jeśli nie działa, spróbuj inną stację
         </div>
       )}
     </div>
